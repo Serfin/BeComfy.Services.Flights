@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using BeComfy.Common.RabbitMq;
+using BeComfy.Services.Flights.Messages.Commands;
+using BeComfy.Common.MSSQL;
 
 namespace BeComfy.Services.Flights
 {
@@ -33,8 +35,11 @@ namespace BeComfy.Services.Flights
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var builder = new ContainerBuilder();
+            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
+                .AsImplementedInterfaces();
             builder.Populate(services);
             builder.AddRabbitMq();
+            builder.AddSqlServer();
 
             Container = builder.Build();
 
@@ -56,7 +61,8 @@ namespace BeComfy.Services.Flights
 
             app.UseHttpsRedirection();
             app.UseMvc();
-            app.UseRabbitMq();
+            app.UseSqlServer();
+            app.UseRabbitMq().SubscribeCommand<CreateFlight>();
         }
     }
 }
