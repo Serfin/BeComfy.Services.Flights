@@ -1,21 +1,16 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 using BeComfy.Common.RabbitMq;
 using BeComfy.Services.Flights.Messages.Commands;
 using BeComfy.Common.MSSQL;
+using BeComfy.Common.CqrsFlow;
 
 namespace BeComfy.Services.Flights
 {
@@ -37,8 +32,11 @@ namespace BeComfy.Services.Flights
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                 .AsImplementedInterfaces();
+
             builder.Populate(services);
             builder.AddRabbitMq();
+            builder.AddHandlers();
+            builder.AddDispatcher();
             builder.AddSqlServer();
 
             Container = builder.Build();
@@ -61,7 +59,6 @@ namespace BeComfy.Services.Flights
 
             app.UseHttpsRedirection();
             app.UseMvc();
-            app.UseSqlServer();
             app.UseRabbitMq().SubscribeCommand<CreateFlight>();
         }
     }
