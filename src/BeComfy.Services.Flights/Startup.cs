@@ -60,6 +60,7 @@ namespace BeComfy.Services.Flights
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseRabbitMq().SubscribeCommand<CreateFlight>();
+            app.UseRabbitMq().SubscribeCommand<DeleteFlight>();
         }
     }
 }
