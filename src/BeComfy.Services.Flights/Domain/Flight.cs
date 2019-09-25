@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
 
@@ -10,6 +11,7 @@ namespace BeComfy.Services.Flights.Domain
         public Guid Id { get; private set; }
         public Guid PlaneId { get; private set; }
         public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
+        public string SerializedAvailableSeats { get; private set; }
         public Guid StartAirport { get; private set; }
         public Guid EndAirport { get; private set; }
         public FlightType FlightType { get; private set; }
@@ -26,6 +28,7 @@ namespace BeComfy.Services.Flights.Domain
             Id = id;
             SetPlaneId(planeId);
             SetAvaiableSeats(availableSeats);
+            SerializeAvailableSeats(availableSeats);
             SetStartAirport(startAirport);
             SetEndAirport(endAirport);
             SetFlightType(flightType);
@@ -126,6 +129,21 @@ namespace BeComfy.Services.Flights.Domain
 
             AvailableSeats = availableSeats;
             SetUpdateDate();
+        }
+
+        private void SerializeAvailableSeats(IDictionary<SeatClass, int> availableSeats)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (var item in availableSeats)
+            {
+                stringBuilder.Append(item.Key.ToString());
+                stringBuilder.Append(":");
+                stringBuilder.Append(item.Value.ToString());
+                stringBuilder.Append(";");
+            }
+
+            SerializedAvailableSeats = stringBuilder.ToString();
         }
 
         private void SetUpdateDate()

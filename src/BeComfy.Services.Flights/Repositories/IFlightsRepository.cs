@@ -4,7 +4,7 @@ using BeComfy.Services.Flights.Domain;
 
 namespace BeComfy.Services.Flights.Repositories
 {
-    public interface IFlightRepository
+    public interface IFlightsRepository
     {
         Task AddFlightAsync(Flight flight);
         Task DeleteFlight(Guid flightId);

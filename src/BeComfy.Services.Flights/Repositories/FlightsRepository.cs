@@ -7,11 +7,11 @@ using Dapper;
 
 namespace BeComfy.Services.Flights.Repositories
 {
-    public class FlightRepository : IFlightRepository
+    public class FlightsRepository : IFlightsRepository
     {
         public readonly ISqlConnector _sqlConnector;
 
-        public FlightRepository(ISqlConnector sqlConnector)
+        public FlightsRepository(ISqlConnector sqlConnector)
         {
             _sqlConnector = sqlConnector;
         }
@@ -19,24 +19,24 @@ namespace BeComfy.Services.Flights.Repositories
         {
             using (var connection = _sqlConnector.CreateConnection())
             {
+                connection.Open();
+
                 var queryParameters = new DynamicParameters();
                 queryParameters.Add("@Id", flight.Id);
                 queryParameters.Add("@PlaneId", flight.PlaneId);
-                queryParameters.Add("@AvailableSeats", "TEST" /* flight.AvailableSeats */);
+                queryParameters.Add("@AvailableSeats", flight.SerializedAvailableSeats);
                 queryParameters.Add("@StartAirport", flight.StartAirport);
                 queryParameters.Add("@EndAirport", flight.EndAirport);
-                queryParameters.Add("@FlightType", flight.FlightType);
+                queryParameters.Add("@FlightType", flight.FlightType.ToString());
                 queryParameters.Add("@Price", flight.Price);
                 queryParameters.Add("@FlightDate", flight.FlightDate);
                 queryParameters.Add("@ReturnDate", flight.ReturnDate);
                 queryParameters.Add("@CreatedAt", flight.CreatedAt);
-                queryParameters.Add("@UpdatedAr", flight.UpdatedAt);
+                queryParameters.Add("@UpdatedAt", flight.UpdatedAt);
 
                 await connection.ExecuteAsync("CreateFlight", queryParameters, 
                     commandType: CommandType.StoredProcedure);
             }
-
-            throw new NotImplementedException();
         }
 
         public Task BookFlight(Guid flightId)
@@ -44,9 +44,18 @@ namespace BeComfy.Services.Flights.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteFlight(Guid flightId)
+        public async Task DeleteFlight(Guid flightId)
         {
-            throw new NotImplementedException();
+            using (var connection = _sqlConnector.CreateConnection())
+            {
+                connection.Open();
+
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@Id", flightId);
+
+                await connection.ExecuteAsync("DeleteFlight", queryParameters,
+                    commandType: CommandType.StoredProcedure);
+            }
         }
     }
 }

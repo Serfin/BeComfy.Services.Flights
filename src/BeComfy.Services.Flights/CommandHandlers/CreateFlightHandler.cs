@@ -9,9 +9,9 @@ namespace BeComfy.Services.Flights.CommandHandlers
 {
     public class CreateFlightHandler : ICommandHandler<CreateFlight>
     {
-        private readonly IFlightRepository _flightsRepository;
+        private readonly IFlightsRepository _flightsRepository;
 
-        public CreateFlightHandler(IFlightRepository flightsRepository)
+        public CreateFlightHandler(IFlightsRepository flightsRepository)
         {
             _flightsRepository = flightsRepository;
         }
