@@ -7,7 +7,8 @@ namespace BeComfy.Services.Flights.Repositories
     public interface IFlightsRepository
     {
         Task AddFlightAsync(Flight flight);
-        Task DeleteFlight(Guid flightId);
+        Task<Flight> GetFlightAsync(Guid id);
         Task BookFlight(Guid flightId);
+        Task DeleteFlight(Guid flightId);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using BeComfy.Common.MSSQL;
 using BeComfy.Services.Flights.Domain;
@@ -15,6 +16,7 @@ namespace BeComfy.Services.Flights.Repositories
         {
             _sqlConnector = sqlConnector;
         }
+
         public async Task AddFlightAsync(Flight flight)
         {
             using (var connection = _sqlConnector.CreateConnection())
@@ -36,6 +38,16 @@ namespace BeComfy.Services.Flights.Repositories
 
                 await connection.ExecuteAsync("CreateFlight", queryParameters, 
                     commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<Flight> GetFlightAsync(Guid id)
+        {
+            var sql = $"SELECT * FROM [BeComfy.Services.Flights].[dbo].[Flights] WHERE Id = '{id.ToString()}'";
+            using (var connection = _sqlConnector.CreateConnection())
+            {
+                var flight = await connection.QueryAsync<Flight>(sql);
+                return flight.SingleOrDefault();
             }
         }
 

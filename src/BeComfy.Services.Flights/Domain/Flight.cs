@@ -3,33 +3,43 @@ using System.Collections.Generic;
 using System.Text;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
+using BeComfy.Services.Flights.Helpers;
 
 namespace BeComfy.Services.Flights.Domain
 {
     public class Flight
     {
+        public Flight()
+        {
+            
+        }
+
         public Guid Id { get; private set; }
         public Guid PlaneId { get; private set; }
         public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
         public string SerializedAvailableSeats { get; private set; }
         public Guid StartAirport { get; private set; }
+        public IEnumerable<Guid> TransferAirports { get; private set; }
+        public string SerializedTransferAirports { get; private set; }
         public Guid EndAirport { get; private set; }
         public FlightType FlightType { get; private set; }
         public decimal Price { get; private set; }
         public DateTime FlightDate { get; private set; }
         public DateTime? ReturnDate { get; private set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; }
 
         public Flight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats, 
-            Guid startAirport, Guid endAirport, FlightType flightType, decimal price, 
-            DateTime flightDate, DateTime? returnDate)
+            Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
+            FlightType flightType, decimal price, DateTime flightDate, DateTime? returnDate)
         {
             Id = id;
             SetPlaneId(planeId);
             SetAvaiableSeats(availableSeats);
-            SerializeAvailableSeats(availableSeats);
+            SerializedTransferAirports = availableSeats.SerializeAvailableSeats();
             SetStartAirport(startAirport);
+            SetTransferAirports(transferAirports);
+            SerializedTransferAirports = transferAirports.SerializeTransferAirports();
             SetEndAirport(endAirport);
             SetFlightType(flightType);
             SetPrice(price);
@@ -57,6 +67,17 @@ namespace BeComfy.Services.Flights.Domain
             }
 
             StartAirport = startAirport;
+            SetUpdateDate();
+        }
+
+        private void SetTransferAirports(IEnumerable<Guid> transferAirports)
+        {
+            if (transferAirports == null)
+            {
+                throw new BeComfyDomainException($"{nameof(transferAirports)} cannot be null");
+            }
+
+            TransferAirports = transferAirports;
             SetUpdateDate();
         }
 
@@ -100,6 +121,11 @@ namespace BeComfy.Services.Flights.Domain
                 throw new BeComfyDomainException("Invalid flight date");
             }
 
+            if (flightDate == null)
+            {
+                throw new BeComfyDomainException($"{nameof(flightDate)} cannot be null");
+            }
+
             FlightDate = flightDate;
             SetUpdateDate();
         }
@@ -131,26 +157,6 @@ namespace BeComfy.Services.Flights.Domain
             SetUpdateDate();
         }
 
-        private void SerializeAvailableSeats(IDictionary<SeatClass, int> availableSeats)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            foreach (var item in availableSeats)
-            {
-                stringBuilder.Append(item.Key.ToString());
-                stringBuilder.Append(":");
-                stringBuilder.Append(item.Value.ToString());
-                stringBuilder.Append(";");
-            }
-
-            SerializedAvailableSeats = stringBuilder.ToString();
-        }
-
-        private void SetUpdateDate()
-        {
-            UpdatedAt = DateTime.UtcNow;
-        }
-
         private int GetSeatsCount(IDictionary<SeatClass, int> seats)
         {
             int seatsCounter = 0;
@@ -161,5 +167,8 @@ namespace BeComfy.Services.Flights.Domain
 
             return seatsCounter;
         }
+
+        private void SetUpdateDate()
+            => UpdatedAt = DateTime.UtcNow;
     }
 }
