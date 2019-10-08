@@ -11,6 +11,7 @@ using BeComfy.Common.RabbitMq;
 using BeComfy.Services.Flights.Messages.Commands;
 using BeComfy.Common.MSSQL;
 using BeComfy.Common.CqrsFlow;
+using BeComfy.Services.Flights.Helpers;
 
 namespace BeComfy.Services.Flights
 {
@@ -28,6 +29,7 @@ namespace BeComfy.Services.Flights
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDapperCustomTypesHandlers();
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())

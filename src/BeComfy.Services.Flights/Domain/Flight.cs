@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
-using BeComfy.Services.Flights.Helpers;
 
 namespace BeComfy.Services.Flights.Domain
 {
@@ -17,10 +15,8 @@ namespace BeComfy.Services.Flights.Domain
         public Guid Id { get; private set; }
         public Guid PlaneId { get; private set; }
         public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
-        public string SerializedAvailableSeats { get; private set; }
         public Guid StartAirport { get; private set; }
         public IEnumerable<Guid> TransferAirports { get; private set; }
-        public string SerializedTransferAirports { get; private set; }
         public Guid EndAirport { get; private set; }
         public FlightType FlightType { get; private set; }
         public decimal Price { get; private set; }
@@ -36,10 +32,8 @@ namespace BeComfy.Services.Flights.Domain
             Id = id;
             SetPlaneId(planeId);
             SetAvaiableSeats(availableSeats);
-            SerializedTransferAirports = availableSeats.SerializeAvailableSeats();
             SetStartAirport(startAirport);
             SetTransferAirports(transferAirports);
-            SerializedTransferAirports = transferAirports.SerializeTransferAirports();
             SetEndAirport(endAirport);
             SetFlightType(flightType);
             SetPrice(price);
@@ -72,11 +66,6 @@ namespace BeComfy.Services.Flights.Domain
 
         private void SetTransferAirports(IEnumerable<Guid> transferAirports)
         {
-            if (transferAirports == null)
-            {
-                throw new BeComfyDomainException($"{nameof(transferAirports)} cannot be null");
-            }
-
             TransferAirports = transferAirports;
             SetUpdateDate();
         }

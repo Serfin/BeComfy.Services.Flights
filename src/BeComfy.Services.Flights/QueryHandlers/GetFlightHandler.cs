@@ -26,7 +26,7 @@ namespace BeComfy.Services.Flights.QueryHandlers
                 {
                     Id = flight.Id,
                     StartAirport = flight.StartAirport,
-                    TransferAirports = flight.SerializedTransferAirports.DeserializeTransferAirports(),
+                    TransferAirports = flight.TransferAirports,
                     EndAirport = flight.EndAirport,
                     FlightType = flight.FlightType.ToString(),
                     Price = flight.Price,
