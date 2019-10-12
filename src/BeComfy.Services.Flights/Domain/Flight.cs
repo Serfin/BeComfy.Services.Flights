@@ -39,7 +39,7 @@ namespace BeComfy.Services.Flights.Domain
             SetPrice(price);
             SetFlightDate(flightDate);
             SetReturnDate(returnDate);
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
 
         private void SetPlaneId(Guid planeId)
@@ -158,6 +158,6 @@ namespace BeComfy.Services.Flights.Domain
         }
 
         private void SetUpdateDate()
-            => UpdatedAt = DateTime.UtcNow;
+            => UpdatedAt = DateTime.Now;
     }
 }
