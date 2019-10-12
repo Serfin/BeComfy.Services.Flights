@@ -23,7 +23,8 @@ namespace BeComfy.Services.Flights.Helpers
 
         public static IEnumerable<Guid> DeserializeTransferAirports(this string transferAirports)
         {
-            var transfers = transferAirports.Split(';');
+            var temp = transferAirports.Remove(transferAirports.Length - 1, 1);
+            var transfers = temp.Split(';');
             List<Guid> result = new List<Guid>();
 
             foreach (var transfer in transfers)

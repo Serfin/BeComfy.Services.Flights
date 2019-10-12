@@ -36,7 +36,7 @@ namespace BeComfy.Services.Flights.Repositories
                         flight.StartAirport,
                         flight.TransferAirports,
                         flight.EndAirport,
-                        flightType,
+                        flight.FlightType,
                         flight.Price,
                         flight.FlightDate,
                         flight.ReturnDate,
@@ -50,6 +50,7 @@ namespace BeComfy.Services.Flights.Repositories
 
         public async Task<Flight> GetFlightAsync(Guid id)
         {
+            SqlMapper.AddTypeHandler(DapperIEnumerableGuidTypeHandler.Default);
             var sql = $"SELECT * FROM [BeComfy.Services.Flights].[dbo].[Flights] WHERE Id = '{id.ToString()}'";
             using (var connection = _sqlConnector.CreateConnection())
             {
