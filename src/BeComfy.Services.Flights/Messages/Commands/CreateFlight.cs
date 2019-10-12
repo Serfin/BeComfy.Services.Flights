@@ -28,6 +28,7 @@ namespace BeComfy.Services.Flights.Messages.Commands
             PlaneId = planeId;
             AvailableSeats = availableSeats;
             StartAirport = startAirport;
+            TransferAirports = transferAirports;
             EndAirport = endAirport;
             FlightType = flightType;
             Price = price;

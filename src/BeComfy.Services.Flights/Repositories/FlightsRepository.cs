@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BeComfy.Common.MSSQL;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Services.Flights.Domain;
+using BeComfy.Services.Flights.Helpers;
 using Dapper;
 
 namespace BeComfy.Services.Flights.Repositories
@@ -22,24 +23,25 @@ namespace BeComfy.Services.Flights.Repositories
 
         public async Task AddFlightAsync(Flight flight)
         {
+            SqlMapper.AddTypeHandler(DapperIEnumerableGuidTypeHandler.Default);
             using (var connection = _sqlConnector.CreateConnection())
             {
+                string flightType = flight.FlightType.ToString();
+
                 connection.Open();
-
-                var queryParameters = new DynamicParameters();
-                queryParameters.Add("@Id", flight.Id);
-                queryParameters.Add("@PlaneId", flight.PlaneId);
-                queryParameters.Add("@StartAirport", flight.StartAirport);
-                queryParameters.Add("@TransferAirports", flight.TransferAirports);
-                queryParameters.Add("@EndAirport", flight.EndAirport);
-                queryParameters.Add("@FlightType", flight.FlightType.ToString());
-                queryParameters.Add("@Price", flight.Price);
-                queryParameters.Add("@FlightDate", flight.FlightDate);
-                queryParameters.Add("@ReturnDate", flight.ReturnDate);
-                queryParameters.Add("@CreatedAt", flight.CreatedAt);
-                queryParameters.Add("@UpdatedAt", flight.UpdatedAt);
-
-                await connection.ExecuteAsync("CreateFlight", queryParameters, 
+                await connection.ExecuteAsync("CreateFlight", 
+                    new { 
+                        flight.Id, 
+                        flight.PlaneId,
+                        flight.StartAirport,
+                        flight.TransferAirports,
+                        flight.EndAirport,
+                        flightType,
+                        flight.Price,
+                        flight.FlightDate,
+                        flight.ReturnDate,
+                        flight.CreatedAt,
+                        flight.UpdatedAt },    
                     commandType: CommandType.StoredProcedure);
 
                 await connection.QueryAsync(PrepareInsertAvailableSeatsRequest(flight.Id, flight.AvailableSeats));
