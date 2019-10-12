@@ -59,6 +59,16 @@ namespace BeComfy.Services.Flights.Repositories
             }
         }
 
+        public async Task<IEnumerable<Flight>> BrowseFlightsAsync(int page, int pageSize)
+        {
+            var sql = $"SELECT * FROM Flights ORDER BY Id OFFSET 1 ROWS FETCH NEXT 3 ROWS ONLY";
+            using (var connection = _sqlConnector.CreateConnection())
+            {
+                var flights = await connection.QueryAsync<Flight>(sql);
+                return flights;
+            }
+        }
+
         public Task BookFlight(Guid flightId)
         {
             throw new NotImplementedException();
