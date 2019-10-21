@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Handlers;
@@ -19,34 +20,28 @@ namespace BeComfy.Services.Flights.QueryHandlers
 
         public async Task<IEnumerable<FlightDto>> HandleAsync(BrowseFlights query)
         {
-            return null;
-        //     var flights = await _flightsRepository.BrowseFlightsAsync(query.Page, query.PageSize);
+            var flights = await _flightsRepository.BrowseFlightsAsync(query.Page, query.PageSize);
 
-        //     if (flights != null) 
-        //     {
-        //         var temp = new List<FlightDto>();
+            var temp = new List<FlightDto>();
+            if (flights != null) 
+            {
+                foreach (var flight in flights)
+                {
+                    temp.Add(new FlightDto() 
+                        {  
+                            Id = flight.Id,
+                            StartAirport = flight.StartAirport,
+                            TransferAirports = flight.TransferAirports,
+                            EndAirport = flight.EndAirport,
+                            FlightType = flight.FlightType.ToString(),
+                            Price = flight.Price,
+                            FlightDate = flight.FlightDate,
+                            ReturnDate = flight.ReturnDate
+                        });
+                }
+            }
 
-        //         foreach (var flight in flights)
-        //         {
-        //             temp.Add(new FlightDto() 
-        //                 {  
-        //                     Id = flight.Id,
-        //                     StartAirport = flight.StartAirport,
-        //                     TransferAirports = flight.TransferAirports,
-        //                     EndAirport = flight.EndAirport,
-        //                     FlightType = flight.FlightType,
-
-        // public Guid StartAirport { get; set; }
-        // public IEnumerable<Guid> TransferAirports { get; set; }
-        // public Guid EndAirport { get; set; } 
-        // public string FlightType { get; set; }
-        // public decimal Price { get; set; }
-        // public DateTime FlightDate { get; set; }
-        // public DateTime? ReturnDate { get; set; } })
-        //         }
-        //     }
-
-        //     return flights;
+            return temp;
         }
     }
 }
