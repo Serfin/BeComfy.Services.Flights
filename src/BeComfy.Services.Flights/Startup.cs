@@ -1,17 +1,17 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using BeComfy.Common.RabbitMq;
 using BeComfy.Services.Flights.Messages.Commands;
-using BeComfy.Common.MSSQL;
+using BeComfy.Services.Flights.EF;
+using BeComfy.Common.EFCore;
+using BeComfy.Common.RabbitMq;
 using BeComfy.Common.CqrsFlow;
-using BeComfy.Services.Flights.Helpers;
 
 namespace BeComfy.Services.Flights
 {
@@ -29,16 +29,15 @@ namespace BeComfy.Services.Flights
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddEFCoreContext<FlightsContext>();
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                 .AsImplementedInterfaces();
-
             builder.Populate(services);
             builder.AddRabbitMq();
             builder.AddHandlers();
             builder.AddDispatcher();
-            builder.AddSqlServer();
 
             Container = builder.Build();
 
