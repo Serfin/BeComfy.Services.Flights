@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.EF;
@@ -30,14 +31,14 @@ namespace BeComfy.Services.Flights.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteFlight(Guid flightId)
+        public async Task DeleteFlight(Guid flightId)
         {
-            throw new NotImplementedException();
+            var flight = await GetFlightAsync(flightId);
+            _context.Flights.Remove(flight);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Flight> GetFlightAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Flight> GetFlightAsync(Guid id)
+            => await _context.Flights.FindAsync(id);
     }
 }
