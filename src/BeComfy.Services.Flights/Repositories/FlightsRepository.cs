@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeComfy.Services.Flights.Repositories
 {
@@ -21,16 +22,9 @@ namespace BeComfy.Services.Flights.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task BookFlight(Guid flightId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Flight>> BrowseFlightsAsync(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
+        public async Task<IEnumerable<Flight>> BrowseFlightsAsync(int pageSize, int page = 1)
+            => await _context.Flights.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        
         public async Task DeleteFlight(Guid flightId)
         {
             var flight = await GetFlightAsync(flightId);

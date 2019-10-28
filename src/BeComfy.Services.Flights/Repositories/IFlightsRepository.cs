@@ -9,8 +9,7 @@ namespace BeComfy.Services.Flights.Repositories
     {
         Task AddFlightAsync(Flight flight);
         Task<Flight> GetFlightAsync(Guid id);
-        Task<IEnumerable<Flight>> BrowseFlightsAsync(int page, int pageSize);
-        Task BookFlight(Guid flightId);
+        Task<IEnumerable<Flight>> BrowseFlightsAsync(int pageSize, int page);
         Task DeleteFlight(Guid flightId);
     }
 }
