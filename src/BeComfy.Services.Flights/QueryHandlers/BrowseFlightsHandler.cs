@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Handlers;
-using BeComfy.Common.Types.Enums;
 using BeComfy.Services.Flights.Dto;
-using BeComfy.Services.Flights.Messages.Queries;
+using BeComfy.Services.Flights.Queries;
 using BeComfy.Services.Flights.Repositories;
 
 namespace BeComfy.Services.Flights.QueryHandlers

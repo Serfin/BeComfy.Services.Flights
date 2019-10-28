@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Handlers;
 using BeComfy.Services.Flights.Dto;
-using BeComfy.Services.Flights.Helpers;
-using BeComfy.Services.Flights.Messages.Queries;
+using BeComfy.Services.Flights.Queries;
 using BeComfy.Services.Flights.Repositories;
 
 namespace BeComfy.Services.Flights.QueryHandlers

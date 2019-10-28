@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Dispatcher;
 using BeComfy.Services.Flights.Dto;
-using BeComfy.Services.Flights.Messages.Queries;
+using BeComfy.Services.Flights.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeComfy.Services.Flights.Controllers
