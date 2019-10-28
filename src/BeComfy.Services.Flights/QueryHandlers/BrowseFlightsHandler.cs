@@ -29,12 +29,13 @@ namespace BeComfy.Services.Flights.QueryHandlers
                         {  
                             Id = flight.Id,
                             StartAirport = flight.StartAirport,
+                            AvailableSeats = flight.AvailableSeats,
                             TransferAirports = flight.TransferAirports,
                             EndAirport = flight.EndAirport,
                             FlightType = flight.FlightType.ToString(),
                             Price = flight.Price,
                             FlightDate = flight.FlightDate,
-                            ReturnDate = flight.ReturnDate
+                            ReturnDate = flight.ReturnDate,
                         });
                 }
             }
