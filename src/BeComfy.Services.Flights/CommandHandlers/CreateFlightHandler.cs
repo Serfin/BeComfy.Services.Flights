@@ -3,6 +3,7 @@ using BeComfy.Common.CqrsFlow.Handlers;
 using BeComfy.Common.RabbitMq;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.Messages.Commands;
+using BeComfy.Services.Flights.Messages.Events;
 using BeComfy.Services.Flights.Repositories;
 
 namespace BeComfy.Services.Flights.CommandHandlers
@@ -10,10 +11,12 @@ namespace BeComfy.Services.Flights.CommandHandlers
     public class CreateFlightHandler : ICommandHandler<CreateFlight>
     {
         private readonly IFlightsRepository _flightsRepository;
+        private readonly IBusPublisher _busPublisher;
 
-        public CreateFlightHandler(IFlightsRepository flightsRepository)
+        public CreateFlightHandler(IFlightsRepository flightsRepository, IBusPublisher busPublisher)
         {
             _flightsRepository = flightsRepository;
+            _busPublisher = busPublisher;
         }
         public async Task HandleAsync(CreateFlight command, ICorrelationContext context)
         {
@@ -22,6 +25,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
                 command.FlightType, command.Price, command.FlightDate, command.ReturnDate);
 
             await _flightsRepository.AddFlightAsync(flight);
+            await _busPublisher.PublishAsync(new FlightCreated(flight.Id), context);
         }
     }
 }
