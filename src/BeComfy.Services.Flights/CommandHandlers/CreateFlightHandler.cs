@@ -25,7 +25,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
                 command.FlightType, command.Price, command.FlightDate, command.ReturnDate);
 
             await _flightsRepository.AddFlightAsync(flight);
-            await _busPublisher.PublishAsync(new FlightCreated(flight.Id), context);
+            await _busPublisher.PublishAsync(new FlightCreated(flight.Id, flight.FlightDate, flight.ReturnDate), context);
         }
     }
 }

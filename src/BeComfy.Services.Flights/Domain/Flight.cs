@@ -21,13 +21,13 @@ namespace BeComfy.Services.Flights.Domain
         public FlightType FlightType { get; private set; }
         public decimal Price { get; private set; }
         public DateTime FlightDate { get; private set; }
-        public DateTime? ReturnDate { get; private set; }
+        public DateTime ReturnDate { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
         public Flight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats, 
             Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
-            FlightType flightType, decimal price, DateTime flightDate, DateTime? returnDate)
+            FlightType flightType, decimal price, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
             SetPlaneId(planeId);
@@ -119,11 +119,16 @@ namespace BeComfy.Services.Flights.Domain
             SetUpdateDate();
         }
 
-        private void SetReturnDate(DateTime? returnDate)
+        private void SetReturnDate(DateTime returnDate)
         {
             if (returnDate == DateTime.MinValue)
             {
-                throw new BeComfyDomainException("Invalid return date");
+                throw new BeComfyDomainException("Invalid flight date");
+            }
+
+            if (returnDate == null)
+            {
+                throw new BeComfyDomainException($"{nameof(returnDate)} cannot be null");
             }
 
             ReturnDate = returnDate;

@@ -17,12 +17,12 @@ namespace BeComfy.Services.Flights.Messages.Commands
         public FlightType FlightType { get; }
         public decimal Price { get; }
         public DateTime FlightDate { get; }
-        public DateTime? ReturnDate { get; }
+        public DateTime ReturnDate { get; }
 
         [JsonConstructor]
         public CreateFlight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats, 
             Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
-            FlightType flightType, decimal price, DateTime flightDate, DateTime? returnDate)
+            FlightType flightType, decimal price, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
             PlaneId = planeId;
