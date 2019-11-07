@@ -20,12 +20,13 @@ namespace BeComfy.Services.Flights.CommandHandlers
         }
         public async Task HandleAsync(CreateFlight command, ICorrelationContext context)
         {
-            var flight = new Flight(command.Id, command.PlaneId, command.AvailableSeats,
-                command.StartAirport, command.TransferAirports, command.EndAirport, 
-                command.FlightType, command.Price, command.FlightDate, command.ReturnDate);
+            var flight = new Flight(command.Id, command.PlaneId, command.StartAirport, 
+                command.TransferAirports, command.EndAirport, 
+                command.FlightType, command.FlightDate, command.ReturnDate);
 
             await _flightsRepository.AddFlightAsync(flight);
-            await _busPublisher.PublishAsync(new FlightCreated(flight.Id, flight.FlightDate, flight.ReturnDate), context);
+            await _busPublisher.PublishAsync(new FlightCreated(flight.Id, flight.PlaneId, 
+                flight.FlightDate, flight.ReturnDate), context);
         }
     }
 }

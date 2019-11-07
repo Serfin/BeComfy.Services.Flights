@@ -25,18 +25,15 @@ namespace BeComfy.Services.Flights.Domain
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
-        public Flight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats, 
-            Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
-            FlightType flightType, decimal price, DateTime flightDate, DateTime returnDate)
+        public Flight(Guid id, Guid planeId, Guid startAirport, IEnumerable<Guid> transferAirports, 
+            Guid endAirport, FlightType flightType, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
             SetPlaneId(planeId);
-            SetAvaiableSeats(availableSeats);
             SetStartAirport(startAirport);
             SetTransferAirports(transferAirports);
             SetEndAirport(endAirport);
             SetFlightType(flightType);
-            SetPrice(price);
             SetFlightDate(flightDate);
             SetReturnDate(returnDate);
             CreatedAt = DateTime.Now;
@@ -92,17 +89,6 @@ namespace BeComfy.Services.Flights.Domain
             SetUpdateDate();
         }
 
-        private void SetPrice(decimal price)
-        {
-            if (price <= 0)
-            {
-                throw new BeComfyDomainException("Price cannot be less or equal to 0");
-            }
-
-            Price = price;
-            SetUpdateDate();
-        }
-
         private void SetFlightDate(DateTime flightDate)
         {
             if (flightDate == DateTime.MinValue)
@@ -133,33 +119,6 @@ namespace BeComfy.Services.Flights.Domain
 
             ReturnDate = returnDate;
             SetUpdateDate();
-        }
-
-        private void SetAvaiableSeats(IDictionary<SeatClass, int> availableSeats)
-        {
-            if (availableSeats.Count <= 0)
-            {
-                throw new BeComfyDomainException("Count of seatsClass cannot be less or equal to 0");
-            }
-
-            if (GetSeatsCount(availableSeats) <= 0)
-            {
-                throw new BeComfyDomainException("Count of available seats cannot be less or equal to 0");
-            }
-
-            AvailableSeats = availableSeats;
-            SetUpdateDate();
-        }
-
-        private int GetSeatsCount(IDictionary<SeatClass, int> seats)
-        {
-            int seatsCounter = 0;
-            foreach (var seatClass in seats)
-            {
-                seatsCounter += seatClass.Value;
-            }
-
-            return seatsCounter;
         }
 
         private void SetUpdateDate()
