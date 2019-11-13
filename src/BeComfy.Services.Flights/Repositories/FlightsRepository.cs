@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BeComfy.Common.Types.Exceptions;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.EF;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ namespace BeComfy.Services.Flights.Repositories
         public async Task DeleteFlight(Guid flightId)
         {
             var flight = await GetFlightAsync(flightId);
+
+            if (flight is null)
+            {
+                throw new BeComfyException($"Flight with id: {flightId} does not exist.");
+            }
+
             _context.Flights.Remove(flight);
             await _context.SaveChangesAsync();
         }

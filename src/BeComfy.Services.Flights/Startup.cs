@@ -61,7 +61,8 @@ namespace BeComfy.Services.Flights
             app.UseMvc();
             app.UseRabbitMq()
                 .SubscribeCommand<CreateFlight>()
-                .SubscribeCommand<DeleteFlight>();
+                .SubscribeCommand<DeleteFlight>()
+                .SubscribeCommand<EndFlight>();
         }
     }
 }

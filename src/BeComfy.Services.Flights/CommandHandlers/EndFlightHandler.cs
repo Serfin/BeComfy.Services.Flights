@@ -20,8 +20,10 @@ namespace BeComfy.Services.Flights.CommandHandlers
 
         public async Task HandleAsync(EndFlight command, ICorrelationContext context)
         {
+            var flight = await _flightsRepository.GetFlightAsync(command.Id);
+
             await _flightsRepository.DeleteFlight(command.Id);
-            await _busPublisher.PublishAsync(new FlightEnded(command.Id), context);
+            await _busPublisher.PublishAsync(new FlightEnded(flight.PlaneId), context);
         }
     }
 }
