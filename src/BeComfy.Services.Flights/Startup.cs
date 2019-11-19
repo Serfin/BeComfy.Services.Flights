@@ -12,6 +12,7 @@ using BeComfy.Services.Flights.EF;
 using BeComfy.Common.EFCore;
 using BeComfy.Common.RabbitMq;
 using BeComfy.Common.CqrsFlow;
+using BeComfy.Common.Jaeger;
 
 namespace BeComfy.Services.Flights
 {
@@ -31,6 +32,7 @@ namespace BeComfy.Services.Flights
             services.AddControllers()
                 .AddNewtonsoftJson();
 
+            services.AddJaeger();
             services.AddEFCoreContext<FlightsContext>();
 
             var builder = new ContainerBuilder();
