@@ -33,6 +33,7 @@ namespace BeComfy.Services.Flights
                 .AddNewtonsoftJson();
 
             services.AddJaeger();
+            services.AddOpenTracing();
             services.AddEFCoreContext<FlightsContext>();
 
             var builder = new ContainerBuilder();
