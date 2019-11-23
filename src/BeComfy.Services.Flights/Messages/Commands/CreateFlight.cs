@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using BeComfy.Common.CqrsFlow;
 using BeComfy.Common.Types.Enums;
+using Newtonsoft.Json;
 
 namespace BeComfy.Services.Flights.Messages.Commands
 {
@@ -16,6 +17,7 @@ namespace BeComfy.Services.Flights.Messages.Commands
         public DateTime FlightDate { get; }
         public DateTime ReturnDate { get; }
 
+        [JsonConstructor]
         public CreateFlight(Guid id, Guid planeId, Guid startAirport, 
             IEnumerable<Guid> transferAirports, Guid endAirport, 
             FlightType flightType, DateTime flightDate, DateTime returnDate)
