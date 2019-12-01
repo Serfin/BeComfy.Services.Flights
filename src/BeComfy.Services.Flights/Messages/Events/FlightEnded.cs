@@ -6,10 +6,10 @@ namespace BeComfy.Services.Flights.Messages.Events
 {
     public class FlightEnded : IEvent
     {
-        public Guid PlaneId { get; }
+        public int PlaneId { get; }
         
         [JsonConstructor]
-        public FlightEnded(Guid planeId)
+        public FlightEnded(int planeId)
         {
             PlaneId = planeId;
         }

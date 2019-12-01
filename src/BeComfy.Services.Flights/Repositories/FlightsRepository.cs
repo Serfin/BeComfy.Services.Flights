@@ -24,7 +24,8 @@ namespace BeComfy.Services.Flights.Repositories
         }
 
         public async Task<IEnumerable<Flight>> BrowseFlightsAsync(int pageSize, int page = 1)
-            => await _context.Flights.OrderBy(x => x.Price).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            => await _context.Flights.OrderBy(x => x.CreatedAt)
+                .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         
         public async Task DeleteFlight(Guid flightId)
         {

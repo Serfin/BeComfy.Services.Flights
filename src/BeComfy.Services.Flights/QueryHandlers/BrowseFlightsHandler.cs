@@ -33,7 +33,7 @@ namespace BeComfy.Services.Flights.QueryHandlers
                             EndAirport = flight.EndAirport,
                             AvailableSeats = flight.AvailableSeats,
                             FlightType = flight.FlightType.ToString(),
-                            Price = flight.Price,
+                            Passengers = flight.Passengers,
                             FlightDate = flight.FlightDate,
                             ReturnDate = flight.ReturnDate,
                         });

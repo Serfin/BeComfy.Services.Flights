@@ -29,7 +29,7 @@ namespace BeComfy.Services.Flights.QueryHandlers
                     TransferAirports = flight.TransferAirports,
                     EndAirport = flight.EndAirport,
                     FlightType = flight.FlightType.ToString(),
-                    Price = flight.Price,
+                    Passengers = flight.Passengers,
                     FlightDate = flight.FlightDate,
                     ReturnDate = flight.ReturnDate,
                 };

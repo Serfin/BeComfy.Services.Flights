@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
+using Microsoft.AspNetCore.Http.Connections;
 
 namespace BeComfy.Services.Flights.Domain
 {
@@ -13,65 +15,86 @@ namespace BeComfy.Services.Flights.Domain
         }
 
         public Guid Id { get; private set; }
-        public Guid PlaneId { get; private set; }
+        public int PlaneId { get; private set; }
         public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
-        public Guid StartAirport { get; private set; }
-        public IEnumerable<Guid> TransferAirports { get; private set; }
-        public Guid EndAirport { get; private set; }
+        public int StartAirport { get; private set; }
+        public IEnumerable<int> TransferAirports { get; private set; }
+        public int EndAirport { get; private set; }
         public FlightType FlightType { get; private set; }
-        public decimal Price { get; private set; }
+        public ICollection<Passenger> Passengers { get; private set; }
         public DateTime FlightDate { get; private set; }
         public DateTime ReturnDate { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; }
         public DateTime UpdatedAt { get; private set; }
 
-        public Flight(Guid id, Guid planeId, Guid startAirport, IEnumerable<Guid> transferAirports, 
-            Guid endAirport, FlightType flightType, DateTime flightDate, DateTime returnDate)
+        public Flight(Guid id, int planeId, IDictionary<SeatClass, int> availableSeats,
+            int startAirport, IEnumerable<int> transferAirports, int endAirport, 
+            FlightType flightType, ICollection<Passenger> passengers, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
             SetPlaneId(planeId);
+            SetAvailableSeats(availableSeats);
             SetStartAirport(startAirport);
             SetTransferAirports(transferAirports);
             SetEndAirport(endAirport);
             SetFlightType(flightType);
+            SetPassengers(passengers);
             SetFlightDate(flightDate);
             SetReturnDate(returnDate);
             CreatedAt = DateTime.Now;
         }
 
-        private void SetPlaneId(Guid planeId)
+        private void SetPlaneId(int planeId)
         {
-            if (planeId == null)
+            if (planeId == default)
             {
-                throw new BeComfyDomainException($"{nameof(planeId)} cannot be null");
+                throw new BeComfyDomainException($"{nameof(planeId)} cannot be set to default");
             }
 
             PlaneId = planeId;
             SetUpdateDate();
         }
 
-        private void SetStartAirport(Guid startAirport)
+        private void SetAvailableSeats(IDictionary<SeatClass, int> availableSeats)
         {
-            if (startAirport == null)
+            if (availableSeats is null)
             {
-                throw new BeComfyDomainException($"{nameof(startAirport)} cannot be null");
+                throw new BeComfyDomainException($"{nameof(availableSeats)} cannot be null");
+            }
+
+            int seatCount = availableSeats.Sum(seat => seat.Value);
+
+            if (seatCount <= 0)
+            {
+                throw new BeComfyDomainException("Total count of seats cannot be less or equal to 0");
+            }
+
+            AvailableSeats = availableSeats;
+            SetUpdateDate();
+        }
+
+        private void SetStartAirport(int startAirport)
+        {
+            if (startAirport == default)
+            {
+                throw new BeComfyDomainException($"{nameof(startAirport)} cannot be set to default");
             }
 
             StartAirport = startAirport;
             SetUpdateDate();
         }
 
-        private void SetTransferAirports(IEnumerable<Guid> transferAirports)
+        private void SetTransferAirports(IEnumerable<int> transferAirports)
         {
             TransferAirports = transferAirports;
             SetUpdateDate();
         }
 
-        private void SetEndAirport(Guid endAirport)
+        private void SetEndAirport(int endAirport)
         {
-            if (endAirport == null)
+            if (endAirport == default)
             {
-                throw new BeComfyDomainException($"{nameof(endAirport)} cannot be null");
+                throw new BeComfyDomainException($"{nameof(endAirport)} cannot be set to default");
             }
 
             EndAirport = endAirport;
@@ -86,6 +109,12 @@ namespace BeComfy.Services.Flights.Domain
             }
 
             FlightType = flightType;
+            SetUpdateDate();
+        }
+
+        private void SetPassengers(ICollection<Passenger> passengers)
+        {
+            Passengers = passengers ?? throw new BeComfyDomainException($"{nameof(passengers)} cannot be null");
             SetUpdateDate();
         }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Handlers;
 using BeComfy.Common.RabbitMq;
@@ -20,9 +21,9 @@ namespace BeComfy.Services.Flights.CommandHandlers
         }
         public async Task HandleAsync(CreateFlight command, ICorrelationContext context)
         {
-            var flight = new Flight(command.Id, command.PlaneId, command.StartAirport, 
-                command.TransferAirports, command.EndAirport, 
-                command.FlightType, command.FlightDate, command.ReturnDate);
+            var flight = new Flight(command.Id, command.PlaneId, command.AvailableSeats, command.StartAirport, 
+                command.TransferAirports, command.EndAirport, command.FlightType, new List<Passenger>(),
+                command.FlightDate, command.ReturnDate);
 
             await _flightsRepository.AddFlightAsync(flight);
             await _busPublisher.PublishAsync(new FlightCreated(flight.Id, flight.PlaneId, 
