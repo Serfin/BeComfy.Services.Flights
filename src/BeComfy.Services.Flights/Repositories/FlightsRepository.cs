@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.EF;
@@ -17,6 +18,7 @@ namespace BeComfy.Services.Flights.Repositories
         {
             _context = context;
         }
+        
         public async Task AddFlightAsync(Flight flight)
         {
             await _context.Flights.AddAsync(flight);
@@ -24,7 +26,7 @@ namespace BeComfy.Services.Flights.Repositories
         }
 
         public async Task<IEnumerable<Flight>> BrowseFlightsAsync(int pageSize, int page = 1)
-            => await _context.Flights.OrderBy(x => x.CreatedAt)
+            => await _context.Flights.OrderBy(x => x.FlightType)
                 .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         
         public async Task DeleteFlight(Guid flightId)
@@ -37,6 +39,12 @@ namespace BeComfy.Services.Flights.Repositories
             }
 
             _context.Flights.Remove(flight);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Flight flight)
+        {
+            _context.Flights.Update(flight);
             await _context.SaveChangesAsync();
         }
 

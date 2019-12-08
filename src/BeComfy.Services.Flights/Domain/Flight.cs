@@ -3,33 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
-using Microsoft.AspNetCore.Http.Connections;
 
 namespace BeComfy.Services.Flights.Domain
 {
     public class Flight
     {
+        public Guid Id { get; private set; }
+        public Guid PlaneId { get; private set; }
+        public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
+        public Guid StartAirport { get; private set; }
+        public IEnumerable<Guid> TransferAirports { get; private set; }
+        public Guid EndAirport { get; private set; }
+        public FlightStatus FlightStatus { get; private set; }
+        public FlightType FlightType { get; private set; }
+        public DateTime FlightDate { get; private set; }
+        public DateTime ReturnDate { get; private set; }
+        public DateTime CreatedAt { get; }
+        public DateTime UpdatedAt { get; private set; }
+        
         public Flight()
         {
             
         }
 
-        public Guid Id { get; private set; }
-        public int PlaneId { get; private set; }
-        public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
-        public int StartAirport { get; private set; }
-        public IEnumerable<int> TransferAirports { get; private set; }
-        public int EndAirport { get; private set; }
-        public FlightType FlightType { get; private set; }
-        public ICollection<Passenger> Passengers { get; private set; }
-        public DateTime FlightDate { get; private set; }
-        public DateTime ReturnDate { get; private set; }
-        public DateTime CreatedAt { get; }
-        public DateTime UpdatedAt { get; private set; }
-
-        public Flight(Guid id, int planeId, IDictionary<SeatClass, int> availableSeats,
-            int startAirport, IEnumerable<int> transferAirports, int endAirport, 
-            FlightType flightType, ICollection<Passenger> passengers, DateTime flightDate, DateTime returnDate)
+        public Flight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats,
+            Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
+            FlightStatus flightStatus, FlightType flightType, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
             SetPlaneId(planeId);
@@ -37,14 +36,14 @@ namespace BeComfy.Services.Flights.Domain
             SetStartAirport(startAirport);
             SetTransferAirports(transferAirports);
             SetEndAirport(endAirport);
+            SetFlightStatus(flightStatus);
             SetFlightType(flightType);
-            SetPassengers(passengers);
             SetFlightDate(flightDate);
             SetReturnDate(returnDate);
             CreatedAt = DateTime.Now;
         }
 
-        private void SetPlaneId(int planeId)
+        private void SetPlaneId(Guid planeId)
         {
             if (planeId == default)
             {
@@ -73,7 +72,7 @@ namespace BeComfy.Services.Flights.Domain
             SetUpdateDate();
         }
 
-        private void SetStartAirport(int startAirport)
+        private void SetStartAirport(Guid startAirport)
         {
             if (startAirport == default)
             {
@@ -84,13 +83,13 @@ namespace BeComfy.Services.Flights.Domain
             SetUpdateDate();
         }
 
-        private void SetTransferAirports(IEnumerable<int> transferAirports)
+        private void SetTransferAirports(IEnumerable<Guid> transferAirports)
         {
             TransferAirports = transferAirports;
             SetUpdateDate();
         }
 
-        private void SetEndAirport(int endAirport)
+        private void SetEndAirport(Guid endAirport)
         {
             if (endAirport == default)
             {
@@ -98,6 +97,17 @@ namespace BeComfy.Services.Flights.Domain
             }
 
             EndAirport = endAirport;
+            SetUpdateDate();
+        }
+
+        public void SetFlightStatus(FlightStatus flightStatus)
+        {
+            if (string.IsNullOrEmpty(flightStatus.ToString()))
+            {
+                throw new BeComfyDomainException($"{nameof(flightStatus)} cannot be null");
+            }
+
+            FlightStatus = flightStatus;
             SetUpdateDate();
         }
 
@@ -109,12 +119,6 @@ namespace BeComfy.Services.Flights.Domain
             }
 
             FlightType = flightType;
-            SetUpdateDate();
-        }
-
-        private void SetPassengers(ICollection<Passenger> passengers)
-        {
-            Passengers = passengers ?? throw new BeComfyDomainException($"{nameof(passengers)} cannot be null");
             SetUpdateDate();
         }
 

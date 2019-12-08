@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using BeComfy.Common.CqrsFlow.Handlers;
 using BeComfy.Common.RabbitMq;
+using BeComfy.Common.Types.Enums;
 using BeComfy.Services.Flights.Messages.Commands;
 using BeComfy.Services.Flights.Messages.Events;
 using BeComfy.Services.Flights.Repositories;
@@ -21,8 +22,9 @@ namespace BeComfy.Services.Flights.CommandHandlers
         public async Task HandleAsync(EndFlight command, ICorrelationContext context)
         {
             var flight = await _flightsRepository.GetFlightAsync(command.Id);
-
-            await _flightsRepository.DeleteFlight(command.Id);
+            flight.SetFlightStatus(FlightStatus.Finished);
+            
+            await _flightsRepository.UpdateAsync(flight);
             await _busPublisher.PublishAsync(new FlightEnded(flight.PlaneId), context);
         }
     }

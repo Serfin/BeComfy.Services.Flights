@@ -13,6 +13,8 @@ using BeComfy.Common.EFCore;
 using BeComfy.Common.RabbitMq;
 using BeComfy.Common.CqrsFlow;
 using BeComfy.Common.Jaeger;
+using BeComfy.Common.RestEase;
+using BeComfy.Services.Flights.Services;
 
 namespace BeComfy.Services.Flights
 {
@@ -34,6 +36,9 @@ namespace BeComfy.Services.Flights
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddEFCoreContext<FlightsContext>();
+            
+            // TODO : Hardcoded addresses for now
+            services.RegisterRestClientFor<IAirplanesService>("http://localhost:5015");
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())

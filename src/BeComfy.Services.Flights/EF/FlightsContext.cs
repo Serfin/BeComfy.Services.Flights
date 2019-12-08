@@ -11,7 +11,6 @@ namespace BeComfy.Services.Flights.EF
     public class FlightsContext : DbContext
     {
         public DbSet<Flight> Flights { get; set; }
-        public DbSet<Passenger> Passengers { get; set; }
 
         public FlightsContext(DbContextOptions options)
             : base(options)
@@ -30,12 +29,8 @@ namespace BeComfy.Services.Flights.EF
             modelBuilder.Entity<Flight>()
                 .Property(x => x.TransferAirports)
                 .HasConversion(
-                    @in => @in.ToCommaSeparatedInt(),
-                    @out => @out.FromCommaSeparatedString());
-
-            modelBuilder.Entity<Passenger>()
-                .ToTable("Passengers")
-                .HasKey("Id");
+                    @in => JsonConvert.SerializeObject(@in), 
+                    @out => JsonConvert.DeserializeObject<IEnumerable<Guid>>(@out));
         }
     }
 }

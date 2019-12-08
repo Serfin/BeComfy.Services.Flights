@@ -28,7 +28,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
                 throw new BeComfyException($"Flight with id: {command.FlightId} does not exist");
             }
             
-            flight.Passengers.Add(new Passenger(command.FlightId, command.SeatClass));
+            // TODO : Finish process
         }
     }
 }

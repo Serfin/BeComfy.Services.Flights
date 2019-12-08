@@ -9,18 +9,18 @@ namespace BeComfy.Services.Flights.Messages.Commands
     public class CreateFlight : ICommand
     {
         public Guid Id { get; }
-        public int PlaneId { get; }
+        public Guid PlaneId { get; }
         public IDictionary<SeatClass, int> AvailableSeats { get; }
-        public int StartAirport { get; }
-        public IEnumerable<int> TransferAirports { get; }
-        public int EndAirport { get; }
+        public Guid StartAirport { get; }
+        public IEnumerable<Guid> TransferAirports { get; }
+        public Guid EndAirport { get; }
         public FlightType FlightType { get; }
         public DateTime FlightDate { get; }
         public DateTime ReturnDate { get; }
 
         [JsonConstructor]
-        public CreateFlight(Guid id, int planeId, IDictionary<SeatClass, int> availableSeats,
-            int startAirport, IEnumerable<int> transferAirports, int endAirport, 
+        public CreateFlight(Guid id, Guid planeId, IDictionary<SeatClass, int> availableSeats,
+            Guid startAirport, IEnumerable<Guid> transferAirports, Guid endAirport, 
             FlightType flightType, DateTime flightDate, DateTime returnDate)
         {
             Id = id;
