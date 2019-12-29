@@ -12,7 +12,8 @@ namespace BeComfy.Services.Flights.Dto
         public IEnumerable<Guid> TransferAirports { get; set; }
         public Guid EndAirport { get; set; } 
         public IDictionary<SeatClass, int> AvailableSeats { get; set; }
-        public string FlightType { get; set; }
+        public FlightStatus FlightStatus { get; set; }
+        public FlightType FlightType { get; set; }
         public DateTime FlightDate { get; set; }
         public DateTime? ReturnDate { get; set; }
     }

@@ -28,7 +28,8 @@ namespace BeComfy.Services.Flights.QueryHandlers
                     AvailableSeats = flight.AvailableSeats,
                     TransferAirports = flight.TransferAirports,
                     EndAirport = flight.EndAirport,
-                    FlightType = flight.FlightType.ToString(),
+                    FlightStatus = flight.FlightStatus,
+                    FlightType = flight.FlightType,
                     FlightDate = flight.FlightDate,
                     ReturnDate = flight.ReturnDate,
                 };

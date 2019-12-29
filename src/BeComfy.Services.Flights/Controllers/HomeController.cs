@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BeComfy.Services.Flights.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class HomeController : ControllerBase
     {
         [HttpGet]
