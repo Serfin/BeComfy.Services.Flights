@@ -31,7 +31,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
 
             if (airplane is null)
             {
-                throw new BeComfyException($"Cannot create flight using airplane: {command.PlaneId}");
+                throw new BeComfyException("cannot_create_flight", $"Airplane with id: '{command.PlaneId}' does not exist");
             }
 
             var flight = new Flight(command.Id, command.PlaneId, command.AvailableSeats, command.StartAirport, 

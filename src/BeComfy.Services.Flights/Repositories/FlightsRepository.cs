@@ -35,7 +35,7 @@ namespace BeComfy.Services.Flights.Repositories
 
             if (flight is null)
             {
-                throw new BeComfyException($"Flight with id: {flightId} does not exist.");
+                throw new BeComfyException("cannot_delete_flight", $"Flight with id: {flightId} does not exist.");
             }
 
             _context.Flights.Remove(flight);

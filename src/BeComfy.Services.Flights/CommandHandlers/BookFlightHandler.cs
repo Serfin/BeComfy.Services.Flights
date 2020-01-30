@@ -25,7 +25,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
 
             if (flight is null)
             {
-                throw new BeComfyException($"Flight with id: {command.FlightId} does not exist");
+                throw new BeComfyException("cannot_book_flight", $"Flight with id: {command.FlightId} does not exist");
             }
             
             // TODO : Finish process
