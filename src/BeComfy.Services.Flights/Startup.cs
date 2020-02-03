@@ -37,8 +37,7 @@ namespace BeComfy.Services.Flights
             services.AddOpenTracing();
             services.AddEFCoreContext<FlightsContext>();
             
-            // TODO : Hardcoded addresses for now
-            services.RegisterRestClientFor<IAirplanesService>("http://localhost:5015");
+            services.RegisterRestClientFor<IAirplanesService>("becomfy-services-airplanes");
 
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
