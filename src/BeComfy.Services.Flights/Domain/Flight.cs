@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeComfy.Common.Mongo;
 using BeComfy.Common.Types.Enums;
 using BeComfy.Common.Types.Exceptions;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace BeComfy.Services.Flights.Domain
 {
-    public class Flight
+    public class Flight : IEntity
     {
         public Guid Id { get; private set; }
         public Guid PlaneId { get; private set; }
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public IDictionary<SeatClass, int> AvailableSeats { get; private set; }
         public Guid StartAirport { get; private set; }
         public IEnumerable<Guid> TransferAirports { get; private set; }

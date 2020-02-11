@@ -38,7 +38,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
                 command.TransferAirports, command.EndAirport, FlightStatus.Continues, command.FlightType, 
                 command.FlightDate, command.ReturnDate);
 
-            await _flightsRepository.AddFlightAsync(flight);
+            await _flightsRepository.AddAsync(flight);
             await _busPublisher.PublishAsync(new FlightCreated(flight.Id, flight.PlaneId, 
                 flight.FlightDate, flight.ReturnDate), context);
         }

@@ -21,7 +21,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
         }
         public async Task HandleAsync(BookFlight command, ICorrelationContext context)
         {
-            var flight = await _flightsRepository.GetFlightAsync(command.FlightId);
+            var flight = await _flightsRepository.GetAsync(command.FlightId);
 
             if (flight is null)
             {

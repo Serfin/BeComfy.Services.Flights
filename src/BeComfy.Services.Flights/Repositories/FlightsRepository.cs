@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeComfy.Services.Flights.Repositories
 {
-    public class FlightsRepository : IFlightsRepository
+    public class FlightsRepository// : IFlightsRepository
     {
         private readonly FlightsContext _context;
 

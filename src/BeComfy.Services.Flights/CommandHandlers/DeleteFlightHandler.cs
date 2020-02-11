@@ -16,6 +16,6 @@ namespace BeComfy.Services.Flights.CommandHandlers
         }
 
         public async Task HandleAsync(DeleteFlight command, ICorrelationContext context)
-            => await _flightsRepository.DeleteFlight(command.Id);
+            => await _flightsRepository.DeleteAsync(command.Id);
     }
 }

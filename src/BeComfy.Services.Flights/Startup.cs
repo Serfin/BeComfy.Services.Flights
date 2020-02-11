@@ -15,6 +15,8 @@ using BeComfy.Common.CqrsFlow;
 using BeComfy.Common.Jaeger;
 using BeComfy.Common.RestEase;
 using BeComfy.Services.Flights.Services;
+using BeComfy.Common.Mongo;
+using BeComfy.Services.Flights.Domain;
 
 namespace BeComfy.Services.Flights
 {
@@ -35,6 +37,8 @@ namespace BeComfy.Services.Flights
 
             services.AddJaeger();
             services.AddOpenTracing();
+            services.AddMongo();
+            services.AddMongoRepository<Flight>("Flights");
             services.AddEFCoreContext<FlightsContext>();
             
             services.RegisterRestClientFor<IAirplanesService>("becomfy-services-airplanes");

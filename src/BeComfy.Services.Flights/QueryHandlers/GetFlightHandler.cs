@@ -17,7 +17,7 @@ namespace BeComfy.Services.Flights.QueryHandlers
         
         public async Task<FlightDto> HandleAsync(GetFlight query)
         {
-            var flight = await _flightsRepository.GetFlightAsync(query.Id);
+            var flight = await _flightsRepository.GetAsync(query.Id);
 
             return flight == null 
                 ? null 

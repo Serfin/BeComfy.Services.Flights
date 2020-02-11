@@ -18,7 +18,7 @@ namespace BeComfy.Services.Flights.QueryHandlers
 
         public async Task<IEnumerable<FlightDto>> HandleAsync(BrowseFlights query)
         {
-            var flights = await _flightsRepository.BrowseFlightsAsync(query.PageSize, query.Page);
+            var flights = await _flightsRepository.BrowseAsync(query.PageSize, query.Page);
 
             var temp = new List<FlightDto>();
             if (flights != null) 

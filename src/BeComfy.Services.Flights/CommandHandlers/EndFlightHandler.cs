@@ -21,7 +21,7 @@ namespace BeComfy.Services.Flights.CommandHandlers
 
         public async Task HandleAsync(EndFlight command, ICorrelationContext context)
         {
-            var flight = await _flightsRepository.GetFlightAsync(command.Id);
+            var flight = await _flightsRepository.GetAsync(command.Id);
             flight.SetFlightStatus(FlightStatus.Finished);
             
             await _flightsRepository.UpdateAsync(flight);
