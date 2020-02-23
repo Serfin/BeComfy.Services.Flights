@@ -17,6 +17,7 @@ using BeComfy.Common.RestEase;
 using BeComfy.Services.Flights.Services;
 using BeComfy.Common.Mongo;
 using BeComfy.Services.Flights.Domain;
+using BeComfy.Services.Flights.Messages.Events;
 
 namespace BeComfy.Services.Flights
 {
@@ -62,7 +63,8 @@ namespace BeComfy.Services.Flights
             app.UseRabbitMq()
                 .SubscribeCommand<CreateFlight>()
                 .SubscribeCommand<DeleteFlight>()
-                .SubscribeCommand<EndFlight>();
+                .SubscribeCommand<EndFlight>()
+                .SubscribeEvent<TicketBought>();
 
             app.UseEndpoints(endpoints =>
             {
