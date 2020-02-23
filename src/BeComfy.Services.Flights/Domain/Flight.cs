@@ -160,5 +160,17 @@ namespace BeComfy.Services.Flights.Domain
 
         private void SetUpdateDate()
             => UpdatedAt = DateTime.Now;
+
+        public void DecreaseAvailableSeats(IDictionary<SeatClass, int> ticketReservedSeats)
+        {
+            var tempDict = new Dictionary<SeatClass, int>();
+            foreach (var pair in AvailableSeats)
+            {
+                tempDict.Add(pair.Key, AvailableSeats[pair.Key] - ticketReservedSeats[pair.Key]);
+            }
+
+            AvailableSeats = tempDict;
+            SetUpdateDate();
+        }
     }
 }

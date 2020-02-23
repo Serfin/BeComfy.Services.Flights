@@ -11,7 +11,7 @@ namespace BeComfy.Services.Flights.Messages.Events
     public class TicketBought : IEvent
     {
         public Guid Id { get; }
-        public Guid FlightId { get; set; }
+        public Guid FlightId { get; }
         public IDictionary<SeatClass, int> AvailableSeats { get; }
         
         [JsonConstructor]

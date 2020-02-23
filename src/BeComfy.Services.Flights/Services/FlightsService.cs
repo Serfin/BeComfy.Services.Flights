@@ -64,9 +64,7 @@ namespace BeComfy.Services.Flights.Services
         public async Task UpdateFlightSeats(TicketBought @event, ICorrelationContext context)
         {
             var flight = await _flightsRepository.GetAsync(@event.FlightId);
-
-            // Decreate seats 
-
+            flight.DecreaseAvailableSeats(@event.AvailableSeats);
             await _flightsRepository.UpdateAsync(flight);
         }
 
