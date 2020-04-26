@@ -18,6 +18,7 @@ using BeComfy.Services.Flights.Services;
 using BeComfy.Common.Mongo;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.Messages.Events;
+using BeComfy.Logging.Elk;
 
 namespace BeComfy.Services.Flights
 {
