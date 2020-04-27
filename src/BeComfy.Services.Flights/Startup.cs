@@ -4,7 +4,6 @@ using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BeComfy.Services.Flights.Messages.Commands;
@@ -18,7 +17,6 @@ using BeComfy.Services.Flights.Services;
 using BeComfy.Common.Mongo;
 using BeComfy.Services.Flights.Domain;
 using BeComfy.Services.Flights.Messages.Events;
-using BeComfy.Logging.Elk;
 
 namespace BeComfy.Services.Flights
 {
