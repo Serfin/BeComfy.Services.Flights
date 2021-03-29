@@ -32,9 +32,7 @@ namespace BeComfy.Services.Flights
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson();
-
+            services.AddControllers();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddMongo();
